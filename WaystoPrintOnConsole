@@ -1,0 +1,73 @@
+
+## ✅ 1. **String Concatenation (`+` operator)**
+
+```csharp
+Console.WriteLine(num + " is an EVEN number");
+```
+
+* Joins variables and strings using `+`.
+* Simple, but can get messy with many variables.
+
+---
+
+## ✅ 2. **String Interpolation (`$""`) (C# 6.0 and above)**
+
+```csharp
+Console.WriteLine($"{num} is an EVEN number");
+```
+
+* Cleaner and more readable.
+* Variables go inside `{ }`.
+
+---
+
+## ✅ 3. **Composite Formatting (`{0}, {1}, ...`)**
+
+```csharp
+Console.WriteLine("{0} is an EVEN number", num);
+```
+
+* Uses placeholders `{0}`, `{1}`, etc.
+* Good for multiple values.
+
+---
+
+## ✅ 4. **String.Format()**
+
+```csharp
+Console.WriteLine(string.Format("{0} is an EVEN number", num));
+```
+
+* Similar to composite formatting but gives you a formatted string first.
+
+---
+
+## ✅ 5. **Verbatim String (`@`) with Interpolation**
+
+```csharp
+Console.WriteLine($@"{num} is an EVEN number");
+```
+
+* Useful when working with multi-line strings or paths.
+
+---
+
+### 🔹 Example with multiple numbers:
+
+```csharp
+int a = 10, b = 20;
+
+// Concatenation
+Console.WriteLine("Sum of " + a + " and " + b + " is " + (a + b));
+
+// Interpolation
+Console.WriteLine($"Sum of {a} and {b} is {a + b}");
+
+// Composite formatting
+Console.WriteLine("Sum of {0} and {1} is {2}", a, b, a + b);
+```
+
+---
+
+👉 For **modern C#**, the recommended way is **string interpolation (`$""`)** because it’s the **cleanest and most readable**.
+
