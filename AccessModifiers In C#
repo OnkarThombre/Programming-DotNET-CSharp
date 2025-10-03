@@ -1,0 +1,97 @@
+namespace Access  modifier =>
+
+We can not able to add any access modifier for namespace in C# it gives compile time error, namespaces are internally public
+
+In C#, you cannot apply access modifiers (public, private, protected, etc.) to a namespace.
+
+A namespace is always implicitly public (accessible anywhere), but its actual visibility depends on the classes inside it.
+✅ So namespace Assignment10 itself doesn’t have an access level — but the classes inside it do.
+
+ #####################################################################################################
+ 
+class Access  modifier =>
+
+If you don’t write any access specifier for class Animal, the default is internal.
+
+That means:
+
+Animal is accessible only inside the same assembly/project.
+
+If you want it accessible from another assembly (e.g., another DLL), you must explicitly mark it public.
+
+Example:
+
+public class Animal { }   // Accessible everywhere
+internal class Animal { } // Default if nothing is written
+
+In C#
+Top-level classes (like your class Animal)
+
+You can declare them as:
+
+public → accessible everywhere.
+
+internal → accessible only within the same assembly/project.
+
+❌ You cannot make a top-level class private or protected.
+
+✅ Reason: If a class is private or protected at the top level, nobody outside could ever reference it, so it makes no sense.
+
+Nested classes (a class inside another class)
+
+You can use all access modifiers:
+
+public
+
+private
+
+protected
+
+internal
+
+protected internal
+
+private protected
+
+Example:
+
+class Outer
+{
+    private class InnerPrivate { }     // only accessible inside Outer
+    protected class InnerProtected { } // accessible in derived classes
+    public class InnerPublic { }       // accessible everywhere
+}
+
+
+#####################################################################################################
+
+Method Access Modifier =>
+
+For methods (like Speak()):
+
+If you don’t write anything, the default is private.
+
+But here, you wrote public, so it’s explicitly public.
+
+Example:
+
+class Animal
+{
+    void Eat()  // Default = private (accessible only inside Animal class)
+    {
+        Console.WriteLine("Animal eats");
+    }
+
+    public void Speak()  // Explicitly public
+    {
+        Console.WriteLine("Animal can speak");
+    }
+}
+
+🔹 Quick Summary
+
+Namespace → no access specifier allowed (always global scope, depends on classes).
+
+Class (default) → internal (visible inside same assembly).
+
+Method (default) → private (visible only inside its class).
