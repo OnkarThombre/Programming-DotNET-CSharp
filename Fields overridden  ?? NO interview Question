@@ -1,5 +1,5 @@
 Parent p = new Child();
-System.out.println(p.x); // 10 → field accessed by reference type
+System.out.println(p.x); // 10 → field accessed by reference type  Parent's field get printed or access here as 10
 Fields get inherited depends on their access modifier  
 Fields does not get overridden. *Imp*
 
@@ -157,3 +157,156 @@ class Program {
 1. **Fields cannot be overridden**, only hidden.
 2. Field access is determined by **reference type**, not object type.
 3. Methods can be **overridden** and use **runtime polymorphism**.
+
+
+
+### **Field Hiding vs Method Overriding**
+
+| Feature                     | Field (Variable)                                          | Method                                                             |
+| --------------------------- | --------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Can it be overridden?**   | ❌ No, it can only be **hidden**                           | ✅ Yes, can be **overridden**                                       |
+| **Access type**             | Determined by **reference type**                          | Determined by **runtime object type** (polymorphism)               |
+| **Declaration in subclass** | `same name` hides parent field                            | `@Override` in Java / `override` in C#                             |
+| **Runtime behavior**        | Uses field of **reference type**                          | Uses method of **actual object type**                              |
+| **Example** (Java)          | `java<br>Parent p = new Child();<br>p.x → Parent's x<br>` | `java<br>Parent p = new Child();<br>p.show() → Child's show()<br>` |
+
+---
+
+### **Visual Diagram (Conceptual)**
+
+```
+Parent
++----------------+
+| int x = 10     |   <--- Field
+| void show() {} |   <--- Method
++----------------+
+        ^
+        |
+Child
++----------------+
+| int x = 20     |   <--- Hides Parent.x
+| void show() {} |   <--- Overrides Parent.show()
++----------------+
+```
+
+**Behavior at runtime:**
+
+```java
+Parent p = new Child();
+System.out.println(p.x);   // 10 → field accessed by reference type
+p.show();                   // Child's show() → runtime polymorphism
+```
+
+---
+
+💡 **Mnemonic:**
+
+* **Fields → hidden → reference decides**
+* **Methods → overridden → object decides**
+
+---
+
+
+## **1️⃣ Java Example**
+
+```java
+class Parent {
+    public int x = 10;          // Field
+    public void show() {        // Method
+        System.out.println("Parent show");
+    }
+}
+
+class Child extends Parent {
+    public int x = 20;          // Hides Parent's x
+    @Override
+    public void show() {        // Overrides Parent's show
+        System.out.println("Child show");
+    }
+}
+
+public class Test {
+    public static void main(String[] args) {
+        Parent p = new Child();
+        Child c = new Child();
+
+        System.out.println(p.x); // 10 → field depends on reference type
+        p.show();                // Child show → method depends on object type
+
+        System.out.println(c.x); // 20 → field of child
+        c.show();                // Child show → method of child
+    }
+}
+```
+
+**Output (Java):**
+
+```
+10
+Child show
+20
+Child show
+```
+
+---
+
+## **2️⃣ C# Example**
+
+```csharp
+using System;
+
+class Parent {
+    public int x = 10;             // Field
+    public virtual void Show() {   // Method
+        Console.WriteLine("Parent Show");
+    }
+}
+
+class Child : Parent {
+    public new int x = 20;         // Hides Parent's x
+    public override void Show() {  // Overrides Parent's Show
+        Console.WriteLine("Child Show");
+    }
+}
+
+class Program {
+    static void Main() {
+        Parent p = new Child();
+        Child c = new Child();
+
+        Console.WriteLine(p.x); // 10 → field depends on reference type
+        p.Show();               // Child Show → method depends on object type
+
+        Console.WriteLine(c.x); // 20 → field of child
+        c.Show();               // Child Show → method of child
+    }
+}
+```
+
+**Output (C#):**
+
+```
+10
+Child Show
+20
+Child Show
+```
+
+---
+
+### ✅ **Key Takeaways**
+
+1. **Fields:**
+
+   * Java: hides parent field if same name
+   * C#: hides parent field using `new` keyword (optional but recommended)
+   * Access depends on **reference type**.
+
+2. **Methods:**
+
+   * Java: `@Override` for overriding
+   * C#: `override` for overriding, `virtual` in parent
+   * Runtime behavior depends on **actual object** (polymorphism).
+
+---
+
