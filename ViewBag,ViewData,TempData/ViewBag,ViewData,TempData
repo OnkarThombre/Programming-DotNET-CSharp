@@ -1,0 +1,365 @@
+Here is your **SHORT, POWERFUL & INTERVIEW-READY CHEAT SHEET** for
+
+### ✅ ViewBag vs ViewData vs TempData (ASP.NET MVC / ASP.NET Core)
+
+ViewData => Dictionary (`ViewDataDictionary`)
+ViewBag => Dynamic Object
+TempData => Dictionary 
+
+used to send data from controller to view 
+> ViewBag and ViewData are used to pass data from controller to view for a single request, while TempData is used to persist data across requests mainly during redirects.(return RedirectToAction()) here TempData is used .
+---
+
+# 🔹 Core Purpose
+
+All three are used to **pass data from Controller to View**.
+
+---
+
+## ✅ Comparison Table (Must-remember)
+
+| Feature            | ViewData                          | ViewBag              | TempData                         |
+| ------------------ | --------------------------------- | -------------------- | -------------------------------- |
+| Type               | Dictionary (`ViewDataDictionary`) | Dynamic Object       | Dictionary                       |
+| Type Safety        | ❌ No                              | ❌ No                 | ❌ No                             |
+| Lifetime           | Current Request Only              | Current Request Only | Across Requests                  |
+| Scope              | Controller → View                 | Controller → View    | Controller → View → Next Request |
+| Persistence        | Not stored                        | Not stored           | Stored in Session                |
+| Needs Type Casting | ✅ Yes                             | ❌ No                 | ✅ Yes                            |
+| Redirect Support   | ❌ No                              | ❌ No                 | ✅ Yes                            |
+
+---
+
+## ✅ ViewData
+
+```csharp
+ViewData["Name"] = "Onkar";
+```
+
+In View:
+
+```cshtml
+@ViewData["Name"]
+```
+
+* Uses key-value pair
+* Requires casting for complex objects
+* Works only for same request
+
+---
+
+## ✅ ViewBag
+
+```csharp
+ViewBag.Name = "Onkar";
+```
+
+In View:
+
+```cshtml
+@ViewBag.Name
+```
+
+* Wrapper over ViewData
+* Uses dynamic
+* Cleaner syntax
+
+---
+
+## ✅ TempData
+
+```csharp
+TempData["Message"] = "Saved Successfully";
+```
+
+In View:
+
+```cshtml
+@TempData["Message"]
+```
+
+* Persists across redirect
+* Uses Session internally
+* Best for success/error messages
+
+---
+
+# 🔥 Real Usage Example
+
+### Controller
+
+```csharp
+public IActionResult Demo()
+{
+    ViewData["A"] = "From ViewData";
+    ViewBag.B = "From ViewBag";
+    TempData["C"] = "From TempData";
+
+    return RedirectToAction("Result");
+}
+```
+
+### Result Action
+
+```csharp
+public IActionResult Result()
+{
+    return View();
+}
+```
+
+### View (Result.cshtml)
+
+```html
+<p>@ViewData["A"]</p>   <!-- ❌ null -->
+<p>@ViewBag.B</p>       <!-- ❌ null -->
+<p>@TempData["C"]</p>   <!-- ✅ works -->
+```
+
+---
+
+# ✅ Detailed Behaviour
+
+| Scenario          | ViewData | ViewBag | TempData |
+| ----------------- | -------- | ------- | -------- |
+| Same View         | ✅        | ✅       | ✅        |
+| RedirectToAction  | ❌        | ❌       | ✅        |
+| Multiple Requests | ❌        | ❌       | ✅ (once) |
+
+---
+
+# 🧠 Memory Trick
+
+```
+ViewData & ViewBag → 1 request
+TempData → 2 requests
+```
+
+---
+
+# ✅ When to Use What?
+
+| Situation                    | Best Choice           |
+| ---------------------------- | --------------------- |
+| Pass small data to same view | ViewBag               |
+| Pass data after Redirect     | TempData              |
+| Strong typing                | Model (Best Practice) |
+
+---
+
+# ⚡ Interview One-liner
+
+> ViewBag and ViewData are used to pass data from controller to view for a single request, while TempData is used to persist data across requests mainly during redirects.
+
+---
+
+# ✅ Key Notes
+
+* Prefer Model over all 3
+* TempData is auto-cleared after read
+* ViewBag internally uses ViewData
+
+---
+
+
+
+
+
+
+
+Sure 👍 Let’s start **from absolute scratch** and build your understanding clearly.
+
+---
+
+# 🧠 First: Why do ViewBag, ViewData, TempData exist?
+
+In ASP.NET MVC / ASP.NET Core:
+
+* Controller processes data
+* View displays data
+
+So we need a way to **send data from Controller → View**.
+That’s where these three come in.
+
+---
+
+# ✅ 1. ViewData – The Base Concept
+
+### What is ViewData?
+
+ViewData is a dictionary used to pass data from controller to view.
+
+### Syntax:
+
+Controller:
+
+```csharp
+ViewData["Name"] = "Onkar";
+```
+
+View:
+
+```cshtml
+@ViewData["Name"]
+```
+
+### Characteristics:
+
+* Key-value pair
+* Exists only for CURRENT request
+* Requires type casting for complex types
+
+### Think of it as:
+
+A bag of data that disappears once the page loads.
+
+---
+
+# ✅ 2. ViewBag – Friendly Version of ViewData
+
+### What is ViewBag?
+
+ViewBag is a dynamic wrapper over ViewData.
+
+### Syntax:
+
+Controller:
+
+```csharp
+ViewBag.Name = "Onkar";
+```
+
+View:
+
+```cshtml
+@ViewBag.Name
+```
+
+### Characteristics:
+
+* No need for key string
+* Same lifetime as ViewData
+* Cleaner and readable
+* Still not type-safe
+
+### Internally:
+
+```
+ViewBag → ViewData
+```
+
+So ViewBag is just syntactic sugar.
+
+---
+
+# ✅ 3. TempData – Data Across Requests
+
+### What is TempData?
+
+TempData is used when you want data available even AFTER redirect.
+
+### Syntax:
+
+Controller:
+
+```csharp
+TempData["msg"] = "Saved Successfully";
+return RedirectToAction("Index");
+```
+
+View:
+
+```cshtml
+@TempData["msg"]
+```
+
+### Characteristics:
+
+* Survives redirect
+* Uses Session internally
+* Data removed after one read
+
+Used mainly for:
+✔ Success messages
+✔ Error alerts
+✔ Notifications
+
+---
+
+# 🔥 Core Differences at a Glance
+
+| Feature          | ViewData        | ViewBag         | TempData     |
+| ---------------- | --------------- | --------------- | ------------ |
+| Type             | Dictionary      | Dynamic Object  | Dictionary   |
+| Lifetime         | Current Request | Current Request | Next Request |
+| Redirect Support | ❌ No            | ❌ No            | ✅ Yes        |
+| Storage          | Server Memory   | Server Memory   | Session      |
+| Type Safety      | ❌ No            | ❌ No            | ❌ No         |
+
+---
+
+# ✅ Practical Example
+
+### Controller
+
+```csharp
+public IActionResult Save()
+{
+    ViewData["A"] = "Hello ViewData";
+    ViewBag.B = "Hello ViewBag";
+    TempData["C"] = "Hello TempData";
+
+    return RedirectToAction("Result");
+}
+```
+
+### Result View
+
+```cshtml
+<p>@ViewData["A"]</p>   <!-- null -->
+<p>@ViewBag.B</p>       <!-- null -->
+<p>@TempData["C"]</p>   <!-- Hello TempData -->
+```
+
+---
+
+# 🎯 Real-life analogy
+
+* ViewData = Message written on whiteboard (erased after class)
+* ViewBag = Sticky note (also removed after use)
+* TempData = Message saved in diary for next day
+
+---
+
+# ✅ When to Use
+
+| Situation           | Recommended         |
+| ------------------- | ------------------- |
+| Same request data   | ViewBag or ViewData |
+| Post-Redirect-Get   | TempData            |
+| Strong data passing | Model (Best)        |
+
+---
+
+# ✅ Interview-ready Summary
+
+> ViewData and ViewBag are used to pass data from controller to view within the same request, but TempData preserves data across redirects using session, making it useful for one-time messages.
+
+---
+
+# ✅ Quick Memory Trick
+
+```
+Same request → ViewBag / ViewData  
+Next request → TempData
+```
+
+---
+
+If you want, I can now show:
+✅ Diagram flow
+✅ Code comparison scenario
+✅ MVC lifecycle related to these
+
+Just tell me 👍
+
