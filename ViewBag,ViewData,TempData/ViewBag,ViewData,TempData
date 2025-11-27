@@ -363,3 +363,130 @@ If you want, I can now show:
 
 Just tell me 👍
 
+
+
+
+Good question 👍
+You are asking about **ONE-DIRECTION vs TWO-DIRECTION data flow** in the context of
+👉 ViewBag, ViewData, TempData (ASP.NET MVC)
+
+---
+
+# ✅ Important Truth (from scratch)
+
+In ASP.NET MVC:
+
+### ✔ ViewBag
+
+### ✔ ViewData
+
+### ✔ TempData
+
+All three are **ONE-DIRECTION ONLY**
+
+### That direction is:
+
+```
+Controller  ➜  View
+```
+
+You CANNOT send data back from View to Controller using them.
+
+So:
+
+| Feature  | Direction |
+| -------- | --------- |
+| ViewBag  | ➜ One way |
+| ViewData | ➜ One way |
+| TempData | ➜ One way |
+
+---
+
+# 🔄 2-DIRECTION (Two-way) Data Flow happens with MODEL
+
+Two-direction communication happens when using:
+✅ Strongly Typed Model
+✅ Form Submission (POST)
+
+Example:
+
+```
+Controller → View → User modifies → View → Controller
+```
+
+That is TWO-direction.
+
+---
+
+# ✅ Simple Comparison
+
+## ONE DIRECTION (Display only)
+
+```csharp
+ViewBag.Name = "Onkar";
+```
+
+Flow:
+
+```
+Controller → View (Display)
+```
+
+---
+
+## TWO DIRECTION (Editable + Return)
+
+```csharp
+public IActionResult Edit()
+{
+    return View(studentModel);
+}
+
+[HttpPost]
+public IActionResult Edit(Student model)
+{
+    // data comes back from View ✅
+}
+```
+
+Flow:
+
+```
+Controller → View → Controller
+```
+
+This is two-direction using Model Binding.
+
+---
+
+# 🔥 Clear Cheat Sheet
+
+| Mechanism     | Direction | Can View send back? |
+| ------------- | --------- | ------------------- |
+| ViewBag       | One-way   | ❌ No                |
+| ViewData      | One-way   | ❌ No                |
+| TempData      | One-way   | ❌ No                |
+| Model Binding | Two-way   | ✅ Yes               |
+
+---
+
+# ✅ Real-Life Analogy
+
+* ViewBag/ViewData = Teacher writes on board (students read only)
+* Model Binding = Student answers back to teacher ✅
+
+---
+
+# ✅ Interview-ready Line
+
+> ViewBag, ViewData and TempData provide one-way communication from Controller to View, whereas Model Binding allows two-way communication between View and Controller.
+
+---
+
+If you want, I can explain:
+✅ Two-way binding with Forms and Razor
+✅ MVC lifecycle diagram
+✅ Difference between Model and ViewBag
+
+Just say 👍
+
