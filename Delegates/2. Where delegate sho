@@ -1,0 +1,134 @@
+You are getting an error because of **WHERE you declared the delegate** 👇
+
+This line is illegal in C#:
+
+```csharp
+public delegate void Mydel(int a , int b);
+```
+
+You placed it **inside the Main method**, but in C#:
+
+> ❌ Delegates CANNOT be declared inside methods
+> ✅ Delegates must be declared at class or namespace level
+
+---
+
+## ❌ Your incorrect code structure
+
+```csharp
+static void Main(string[] args)
+{
+    public delegate void Mydel(int a , int b);  // ❌ Not allowed here
+}
+```
+
+---
+
+# ✅ Correct Way to Declare Delegate
+
+Move the delegate OUTSIDE the method but INSIDE the namespace or class.
+
+### ✔️ Fixed and Working Code
+
+```csharp
+namespace Delegates
+{
+    // ✅ Delegate declared at namespace level
+    public delegate void Mydel(int a, int b);
+
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Mydel del = add;   // Assign method to delegate
+            del(10, 20);       // Invoke delegate
+        }
+
+        public static void add(int a, int b)
+        {
+            Console.WriteLine(a + b);
+        }
+    }
+}
+```
+
+### ✅ Output
+
+```
+30
+```
+
+---
+
+# 🔥 Important Rules About Delegates
+
+| Rule             | Valid         |
+| ---------------- | ------------- |
+| Inside Method    | ❌ Not allowed |
+| Inside Class     | ✅ Allowed     |
+| Inside Namespace | ✅ Allowed     |
+
+---
+
+# ✅ Correct Structure Pattern
+
+```csharp
+delegate returntype DelegateName(parameters);
+
+class Program
+{
+    static void Main()
+    {
+        // use delegate here
+    }
+}
+```
+
+---
+
+# ✅ What you learned
+
+✔ Delegate must be declared outside methods
+✔ Method signature must match delegate
+✔ Method should be static if used in static Main
+
+---
+
+# ✅ Alternate Fix (Inside Class)
+
+```csharp
+namespace Delegates
+{
+    internal class Program
+    {
+        public delegate void Mydel(int a, int b);
+
+        static void Main(string[] args)
+        {
+            Program p = new Program();
+            Mydel d = p.add;
+            d(5, 10);
+        }
+
+        public void add(int a, int b)
+        {
+            Console.WriteLine(a + b);
+        }
+    }
+}
+```
+
+---
+
+# 🧠 Interview Tip
+
+> Delegate must be declared at class or namespace level, not inside a method.
+
+---
+
+If you want, I can show:
+✅ Multicast version of your code
+✅ Delegate + Lambda version
+✅ Delegate vs Event example
+
+Just say 👍
