@@ -1,0 +1,45 @@
+namespace Delegates
+{
+    internal class Program
+    {
+        public delegate void Mydel(int a, int b);
+
+        public delegate int Mydel2(int a , int b);
+        static void Main(string[] args)
+        {
+            Program obj = new Program();
+            Mydel ptr = new Mydel(obj.add);  // only add is not acceptable here bcz non static and class level functn 
+                                             // so with obj.fun name 
+            ptr(77, 5);
+            //public delegate void Mydel(int a, int b); delegate should be at class level or namespace level
+            // not in method 
+
+            Mydel2 del1 = obj.Sub;
+            
+            Console.WriteLine(del1(10, 8));
+
+            Mydel del2 = delegate (int x, int y)
+            {
+                Console.WriteLine(" int x and int y wala :) delegate called here");
+            };
+
+            del2(100, 300);
+
+            Mydel del3 = (x, y) => { Console.WriteLine("Onkar"); };
+            del3(500,100);
+
+            Mydel del4 = (a, b) => Console.WriteLine("lambda delegate");
+            del4(4, 8);
+        }
+
+        public void add(int a , int b)
+        {
+            Console.WriteLine(a + b);
+        }
+
+        public int Sub(int a , int b)
+        {
+            return a - b;
+        }
+    }
+}
